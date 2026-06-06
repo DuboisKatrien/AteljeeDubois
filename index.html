@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quote van de Dag</title>
+
   <style>
     body {
       font-family: "Helvetica Neue", Arial, sans-serif;
-      background: #5ff9f2;
+      background: #f4f4f4;
       margin: 0;
       padding: 0;
       display: flex;
@@ -15,10 +16,11 @@
       align-items: center;
       height: 100vh;
       text-align: center;
+      transition: background-color 0.6s ease;
     }
 
     .card {
-      background: #BDF9FA;
+      background: white;
       padding: 40px;
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
@@ -36,16 +38,35 @@
       font-style: italic;
       color: #555;
     }
+
+    #colorButton {
+      margin-top: 25px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background: #333;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    #colorButton:hover {
+      background: #555;
+    }
   </style>
 </head>
+
 <body>
 
   <div class="card">
     <h1>Quote van de Dag</h1>
     <div id="quote">Laden...</div>
+    <button id="colorButton">Verander stemming</button>
   </div>
 
   <script>
+    // Quote van de dag laden
     fetch("quotes.json")
       .then(response => response.json())
       .then(data => {
@@ -57,6 +78,28 @@
       .catch(() => {
         document.getElementById("quote").innerText = "Kon geen quote laden.";
       });
+
+    // Emotiekleuren
+    const moods = [
+      { name: "Rust", color: "#A8DADC" },
+      { name: "Energie", color: "#FFBE0B" },
+      { name: "Liefde", color: "#FF006E" },
+      { name: "Vrolijkheid", color: "#FFD166" },
+      { name: "Focus", color: "#118AB2" },
+      { name: "Creativiteit", color: "#9B5DE5" },
+      { name: "Zachtheid", color: "#F7EDE2" },
+      { name: "Kracht", color: "#06D6A0" }
+    ];
+
+    let moodIndex = 0;
+
+    document.getElementById("colorButton").addEventListener("click", () => {
+      const mood = moods[moodIndex];
+      document.body.style.backgroundColor = mood.color;
+      document.getElementById("colorButton").innerText = "Stemming: " + mood.name;
+
+      moodIndex = (moodIndex + 1) % moods.length;
+    });
   </script>
 
 </body>
