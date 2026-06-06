@@ -5,13 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quote van de Dag</title>
 
-  <!-- Mooie Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
     body {
       font-family: "Poppins", sans-serif;
-      background: linear-gradient(135deg, #f8f9fc, #e8ecf5);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       margin: 0;
       padding: 0;
       display: flex;
@@ -19,15 +20,16 @@
       align-items: center;
       height: 100vh;
       text-align: center;
-      transition: background-color 0.6s ease;
+      transition: background-image 0.8s ease-in-out;
     }
 
     .card {
-      background: white;
+      background: rgba(255, 255, 255, 0.85);
       padding: 50px;
       border-radius: 20px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
       max-width: 650px;
+      backdrop-filter: blur(6px);
       animation: fadeIn 0.8s ease;
     }
 
@@ -46,7 +48,7 @@
     #quote {
       font-size: 1.6rem;
       font-style: italic;
-      color: #555;
+      color: #444;
       line-height: 1.5;
       margin-bottom: 30px;
     }
@@ -92,23 +94,23 @@
         document.getElementById("quote").innerText = "Kon geen quote laden.";
       });
 
-    // Emotiekleuren
+    // Emotie-achtergronden
     const moods = [
-      { name: "Rust", color: "#A8DADC" },
-      { name: "Energie", color: "#FFBE0B" },
-      { name: "Liefde", color: "#FF006E" },
-      { name: "Vrolijkheid", color: "#FFD166" },
-      { name: "Focus", color: "#118AB2" },
-      { name: "Creativiteit", color: "#9B5DE5" },
-      { name: "Zachtheid", color: "#F7EDE2" },
-      { name: "Kracht", color: "#06D6A0" }
+      { name: "Rust", image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e" },
+      { name: "Energie", image: "https://images.unsplash.com/photo-1501973801540-537f08ccae7b" },
+      { name: "Liefde", image: "https://images.unsplash.com/photo-1524253482453-3fed8d2fe12b" },
+      { name: "Vrolijkheid", image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee" },
+      { name: "Focus", image: "https://images.unsplash.com/photo-1500534623283-312aade485b7" },
+      { name: "Creativiteit", image: "https://images.unsplash.com/photo-1545239351-1141bd82e8a6" },
+      { name: "Zachtheid", image: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21" },
+      { name: "Kracht", image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470" }
     ];
 
     let moodIndex = 0;
 
     document.getElementById("colorButton").addEventListener("click", () => {
       const mood = moods[moodIndex];
-      document.body.style.background = mood.color;
+      document.body.style.backgroundImage = `url('${mood.image}')`;
       document.getElementById("colorButton").innerText = "Stemming: " + mood.name;
 
       moodIndex = (moodIndex + 1) % moods.length;
