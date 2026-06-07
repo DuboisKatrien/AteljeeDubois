@@ -94,7 +94,7 @@
         document.getElementById("quote").innerText = "Kon geen quote laden.";
       });
 
-    // Emoties + achtergronden
+    // Emoties + correcte achtergrondfoto's
     const moods = [
       {
         name: "Blijdschap (zon)",
@@ -115,25 +115,7 @@
       {
         name: "Walging (zandstorm)",
         image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
-
+      },
       {
         name: "Verrassing (regenboog)",
-        image: "https://images.unsplash.com/photo-1500534314211-0a24cd03f2c0"
-      }
-    ];
-
-    let moodIndex = 0;
-
-    // Start met eerste emotie
-    document.body.style.backgroundImage = `url('${moods[0].image}')`;
-
-    document.getElementById("moodButton").addEventListener("click", () => {
-      moodIndex = (moodIndex + 1) % moods.length;
-      const mood = moods[moodIndex];
-      document.body.style.backgroundImage = `url('${mood.image}')`;
-      document.getElementById("moodButton").innerText = "Stemming: " + mood.name;
-    });
-  </script>
-
-</body>
-</html>
+        image: "https://images.unsplash.com
