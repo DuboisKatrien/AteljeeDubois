@@ -53,7 +53,7 @@
       margin-bottom: 30px;
     }
 
-    #colorButton {
+    #moodButton {
       padding: 14px 28px;
       font-size: 1rem;
       border: none;
@@ -65,7 +65,7 @@
       font-weight: 500;
     }
 
-    #colorButton:hover {
+    #moodButton:hover {
       background: #574fe3;
       transform: scale(1.05);
     }
@@ -77,7 +77,7 @@
   <div class="card">
     <h1>Quote van de Dag</h1>
     <div id="quote">Laden...</div>
-    <button id="colorButton">Verander stemming</button>
+    <button id="moodButton">Stemming: Blijdschap</button>
   </div>
 
   <script>
@@ -94,26 +94,44 @@
         document.getElementById("quote").innerText = "Kon geen quote laden.";
       });
 
-    // Emotie-achtergronden
+    // Emoties + achtergronden
     const moods = [
-      { name: "Rust", image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e" },
-      { name: "Energie", image: "https://images.unsplash.com/photo-1501973801540-537f08ccae7b" },
-      { name: "Liefde", image: "https://images.unsplash.com/photo-1524253482453-3fed8d2fe12b" },
-      { name: "Vrolijkheid", image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee" },
-      { name: "Focus", image: "https://images.unsplash.com/photo-1500534623283-312aade485b7" },
-      { name: "Creativiteit", image: "https://images.unsplash.com/photo-1545239351-1141bd82e8a6" },
-      { name: "Zachtheid", image: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21" },
-      { name: "Kracht", image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470" }
+      {
+        name: "Blijdschap (zon)",
+        image: "https://images.unsplash.com/photo-1501973801540-537f08ccae7b"
+      },
+      {
+        name: "Verdriet (regen)",
+        image: "https://images.unsplash.com/photo-1501594907352-04cda38ebc29"
+      },
+      {
+        name: "Angst (orkaan)",
+        image: "https://images.unsplash.com/photo-1500673922987-e212871fec22"
+      },
+      {
+        name: "Boosheid (donderwolken)",
+        image: "https://images.unsplash.com/photo-1500674425229-f692875b0ab7"
+      },
+      {
+        name: "Walging (zandstorm)",
+        image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
+      },
+      {
+        name: "Verrassing (regenboog)",
+        image: "https://images.unsplash.com/photo-1500534314211-0a24cd03f2c0"
+      }
     ];
 
     let moodIndex = 0;
 
-    document.getElementById("colorButton").addEventListener("click", () => {
+    // Start met eerste emotie
+    document.body.style.backgroundImage = `url('${moods[0].image}')`;
+
+    document.getElementById("moodButton").addEventListener("click", () => {
+      moodIndex = (moodIndex + 1) % moods.length;
       const mood = moods[moodIndex];
       document.body.style.backgroundImage = `url('${mood.image}')`;
-      document.getElementById("colorButton").innerText = "Stemming: " + mood.name;
-
-      moodIndex = (moodIndex + 1) % moods.length;
+      document.getElementById("moodButton").innerText = "Stemming: " + mood.name;
     });
   </script>
 
