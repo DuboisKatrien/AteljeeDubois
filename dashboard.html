@@ -13,46 +13,58 @@
       margin: 0;
       padding: 0;
       height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       background-size: cover;
       background-position: center;
       transition: background 0.6s ease;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
     }
 
-    .card {
+    /* Kaart linksboven */
+    .emoji-card {
+      grid-column: 1 / 2;
+      grid-row: 1 / 2;
+      align-self: start;
+      justify-self: start;
       background: rgba(255, 255, 255, 0.85);
-      padding: 40px;
+      padding: 25px 35px;
       border-radius: 20px;
       box-shadow: 0 4px 25px rgba(0,0,0,0.1);
-      width: 450px;
-      text-align: center;
       backdrop-filter: blur(8px);
-      animation: fadeIn 0.8s ease;
+      margin: 30px;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* Kaart rechtsbeneden */
+    .chart-card {
+      grid-column: 2 / 3;
+      grid-row: 2 / 3;
+      align-self: end;
+      justify-self: end;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 25px 35px;
+      border-radius: 20px;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+      backdrop-filter: blur(8px);
+      margin: 30px;
     }
 
     h2 {
       color: #4A4A4A;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       font-weight: 600;
     }
 
     .emoji-container {
       display: flex;
       justify-content: space-between;
-      margin: 20px 0;
+      margin: 10px 0;
     }
 
     .emoji {
-      font-size: 45px;
+      font-size: 40px;
       cursor: pointer;
-      padding: 12px;
+      padding: 10px;
       border-radius: 15px;
       transition: 0.3s ease;
       background: #FFF7D1;
@@ -64,20 +76,20 @@
     }
 
     #quote {
-      margin-top: 25px;
-      font-size: 1.2rem;
+      margin-top: 15px;
+      font-size: 1rem;
       font-style: italic;
       color: #4A4A4A;
     }
 
     #logout {
-      margin-top: 25px;
+      margin-top: 15px;
       background: #C8F3D6;
-      padding: 10px 20px;
+      padding: 8px 18px;
       border-radius: 12px;
       border: none;
       cursor: pointer;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
       transition: 0.3s ease;
     }
@@ -88,14 +100,56 @@
     }
 
     canvas {
-      margin-top: 30px;
+      margin-top: 20px;
+    }
+
+    /* 📱 Mobiele versie */
+    @media (max-width: 768px) {
+
+      body {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        padding: 0;
+      }
+
+      .emoji-card,
+      .chart-card {
+        margin: 15px;
+        padding: 15px 20px;
+        width: auto;
+        background: rgba(255, 255, 255, 0.65);
+      }
+
+      h2 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+      }
+
+      .emoji {
+        font-size: 32px;
+        padding: 8px;
+      }
+
+      #quote {
+        font-size: 0.9rem;
+      }
+
+      #logout {
+        font-size: 13px;
+        padding: 6px 14px;
+      }
+
+      canvas {
+        height: 150px !important;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <div class="card">
+  <!-- Emoties linksboven -->
+  <div class="emoji-card">
     <h2>Hoe voel je je vandaag?</h2>
 
     <div class="emoji-container">
@@ -108,24 +162,27 @@
 
     <div id="quote">Kies een emotie om je SoulColor te zien.</div>
 
-    <canvas id="emotionChart" width="400" height="200"></canvas>
-
     <button id="logout" onclick="logout()">Uitloggen</button>
+  </div>
+
+  <!-- Grafiek rechtsbeneden -->
+  <div class="chart-card">
+    <canvas id="emotionChart" width="400" height="200"></canvas>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <script>
-    // Foto's voor elke emotie
+    /* Foto's voor elke emotie */
     const emotionImages = {
       blij: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/zon.jpg",
       verdrietig: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/regen.jpg",
       boos: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/donder.jpg",
-      moe: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/moe.jpg",
-      neutraal: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/neutraal.jpg"
+      moe: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/orkaan.jpg",
+      neutraal: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/zandstorm.jpg"
     };
 
-    // Emotiewaarden voor grafiek
+    /* Emotiewaarden voor grafiek */
     const emotionValues = {
       blij: 5,
       boos: 4,
@@ -134,11 +191,11 @@
       verdrietig: 1
     };
 
-    // Haal ingelogde gebruiker op
+    /* Ingelogde gebruiker ophalen */
     const user = JSON.parse(localStorage.getItem("loggedInUser"));
     const email = user.email;
 
-    // Quote van de dag
+    /* Quote van de dag */
     function loadQuote() {
       fetch("quotes.json")
         .then(res => res.json())
@@ -154,9 +211,8 @@
 
     loadQuote();
 
-    // Emotie kiezen
+    /* Emotie kiezen */
     function selectEmotion(emotion) {
-      // Achtergrondfoto instellen
       document.body.style.background = `url('${emotionImages[emotion]}') center/cover no-repeat`;
 
       loadQuote();
@@ -173,7 +229,7 @@
       drawEmotionChart();
     }
 
-    // Grafiek tekenen
+    /* Grafiek tekenen */
     function drawEmotionChart() {
       const history = JSON.parse(localStorage.getItem("emotionHistory_" + email)) || [];
       const ctx = document.getElementById("emotionChart").getContext("2d");
@@ -187,7 +243,6 @@
 
       const labels = history.map(entry => entry.date);
       const data = history.map(entry => emotionValues[entry.emotion]);
-      const colors = history.map(entry => "rgba(255,255,255,0.8)");
 
       new Chart(ctx, {
         type: "line",
@@ -197,7 +252,7 @@
             label: "Jouw SoulColor emoties",
             data: data,
             borderColor: "#ffffff",
-            backgroundColor: colors,
+            backgroundColor: "rgba(255,255,255,0.6)",
             pointBackgroundColor: "#ffffff",
             pointRadius: 8,
             borderWidth: 3,
