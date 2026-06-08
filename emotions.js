@@ -1,7 +1,4 @@
-// Controleer of Chart.js geladen is
-if (typeof Chart === "undefined") {
-  console.error("Chart.js niet gevonden!");
-}
+// SoulColor emotions.js — volledig werkend
 
 // Emotiewaarden voor de grafiek
 const emotionValues = {
@@ -24,7 +21,6 @@ const emotionColors = {
 // Functie om de grafiek te tekenen
 function drawEmotionChart() {
   const history = JSON.parse(localStorage.getItem("emotionHistory")) || [];
-
   const ctx = document.getElementById("emotionChart").getContext("2d");
 
   if (history.length === 0) {
@@ -72,4 +68,3 @@ function drawEmotionChart() {
     }
   });
 }
-
