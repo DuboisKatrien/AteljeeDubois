@@ -1,3 +1,8 @@
+// Controleer of Chart.js geladen is
+if (typeof Chart === "undefined") {
+  console.error("Chart.js niet gevonden!");
+}
+
 // Emotiewaarden voor de grafiek
 const emotionValues = {
   blij: 5,
@@ -20,8 +25,9 @@ const emotionColors = {
 function drawEmotionChart() {
   const history = JSON.parse(localStorage.getItem("emotionHistory")) || [];
 
+  const ctx = document.getElementById("emotionChart").getContext("2d");
+
   if (history.length === 0) {
-    const ctx = document.getElementById("emotionChart").getContext("2d");
     ctx.font = "16px Poppins";
     ctx.fillStyle = "#4A4A4A";
     ctx.fillText("Nog geen emoties geregistreerd.", 50, 100);
@@ -31,8 +37,6 @@ function drawEmotionChart() {
   const labels = history.map(entry => entry.date);
   const data = history.map(entry => emotionValues[entry.emotion]);
   const colors = history.map(entry => emotionColors[entry.emotion]);
-
-  const ctx = document.getElementById("emotionChart").getContext("2d");
 
   new Chart(ctx, {
     type: "line",
@@ -63,10 +67,9 @@ function drawEmotionChart() {
         }
       },
       plugins: {
-        legend: {
-          display: false
-        }
+        legend: { display: false }
       }
     }
   });
 }
+
