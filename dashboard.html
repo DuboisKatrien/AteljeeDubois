@@ -116,8 +116,6 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <!-- Emotie- en grafieklogica -->
-  <script src="emotions.js"></script>
-
   <script>
     // Pastelkleuren voor achtergrond
     const emotionColors = {
@@ -126,6 +124,15 @@
       boos: "#FFB3B3",
       moe: "#D8C7FF",
       neutraal: "#F0F0F0"
+    };
+
+    // Emotiewaarden voor grafiek
+    const emotionValues = {
+      blij: 5,
+      boos: 4,
+      neutraal: 3,
+      moe: 2,
+      verdrietig: 1
     };
 
     // Quote van de dag
@@ -159,58 +166,64 @@
       drawEmotionChart();
     }
 
+    // Grafiek tekenen
+    function drawEmotionChart() {
+      const history = JSON.parse(localStorage.getItem("emotionHistory")) || [];
+      const ctx = document.getElementById("emotionChart").getContext("2d");
+
+      if (history.length === 0) {
+        ctx.font = "16px Poppins";
+        ctx.fillStyle = "#4A4A4A";
+        ctx.fillText("Nog geen emoties geregistreerd.", 50, 100);
+        return;
+      }
+
+      const labels = history.map(entry => entry.date);
+      const data = history.map(entry => emotionValues[entry.emotion]);
+      const colors = history.map(entry => emotionColors[entry.emotion]);
+
+      new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets: [{
+            label: "Jouw SoulColor emoties",
+            data: data,
+            borderColor: "#F7C8E0",
+            backgroundColor: colors,
+            pointBackgroundColor: colors,
+            pointRadius: 8,
+            borderWidth: 3,
+            tension: 0.4
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              min: 0,
+              max: 6,
+              ticks: {
+                stepSize: 1,
+                callback: function(value) {
+                  return ["", "😢", "😴", "😐", "😡", "😀"][value];
+                }
+              }
+            }
+          },
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+    }
+
     function logout() {
       localStorage.removeItem("loggedInUser");
       window.location.href = "login.html";
     }
 
-    // Grafiek tonen bij laden
     drawEmotionChart();
   </script>
-  
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="emotions.js"></script>
-
-<script>
-  // Quote van de dag
-  function loadQuote() {
-    fetch("quotes.json")
-      .then(res => res.json())
-      .then(data => {
-        const quotes = data.quotes;
-        const today = new Date().getDate();
-        document.getElementById("quote").innerText = quotes[today % quotes.length];
-      })
-      .catch(() => {
-        document.getElementById("quote").innerText = "Vandaag is een nieuwe kans om te stralen.";
-      });
-  }
-
-  loadQuote();
-
-  // Emotie kiezen
-  function selectEmotion(emotion) {
-    document.body.style.background = emotionColors[emotion];
-    loadQuote();
-
-    let history = JSON.parse(localStorage.getItem("emotionHistory")) || [];
-    history.push({
-      date: new Date().toISOString().split("T")[0],
-      emotion: emotion
-    });
-    localStorage.setItem("emotionHistory", JSON.stringify(history));
-
-    drawEmotionChart();
-  }
-
-  function logout() {
-    localStorage.removeItem("loggedInUser");
-    window.location.href = "login.html";
-  }
-
-  drawEmotionChart();
-</script>
 
 </body>
 </html>
-
