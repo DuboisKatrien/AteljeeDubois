@@ -16,7 +16,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, #F7C8E0, #CDE7FF);
+      background-size: cover;
+      background-position: center;
       transition: background 0.6s ease;
     }
 
@@ -112,18 +113,16 @@
     <button id="logout" onclick="logout()">Uitloggen</button>
   </div>
 
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Dashboard script -->
   <script>
-    // Pastelkleuren voor achtergrond
-    const emotionColors = {
-      blij: "#FFE9A3",
-      verdrietig: "#CDE7FF",
-      boos: "#FFB3B3",
-      moe: "#D8C7FF",
-      neutraal: "#F0F0F0"
+    // Foto's voor elke emotie
+    const emotionImages = {
+      blij: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/zon.jpg",
+      verdrietig: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/regen.jpg",
+      boos: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/donder.jpg",
+      moe: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/orkaan.jpg",
+      neutraal: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/zandstorm.jpg"
     };
 
     // Emotiewaarden voor grafiek
@@ -157,7 +156,9 @@
 
     // Emotie kiezen
     function selectEmotion(emotion) {
-      document.body.style.background = emotionColors[emotion];
+      // Achtergrondfoto instellen
+      document.body.style.background = `url('${emotionImages[emotion]}') center/cover no-repeat`;
+
       loadQuote();
 
       let history = JSON.parse(localStorage.getItem("emotionHistory_" + email)) || [];
@@ -186,7 +187,7 @@
 
       const labels = history.map(entry => entry.date);
       const data = history.map(entry => emotionValues[entry.emotion]);
-      const colors = history.map(entry => emotionColors[entry.emotion]);
+      const colors = history.map(entry => "rgba(255,255,255,0.8)");
 
       new Chart(ctx, {
         type: "line",
@@ -195,9 +196,9 @@
           datasets: [{
             label: "Jouw SoulColor emoties",
             data: data,
-            borderColor: "#F7C8E0",
+            borderColor: "#ffffff",
             backgroundColor: colors,
-            pointBackgroundColor: colors,
+            pointBackgroundColor: "#ffffff",
             pointRadius: 8,
             borderWidth: 3,
             tension: 0.4
