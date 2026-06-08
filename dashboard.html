@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoulColor – Dashboard</title>
+
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #F7C8E0, #CDE7FF);
+      transition: background 0.6s ease;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.85);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+      width: 420px;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      color: #4A4A4A;
+      margin-bottom: 20px;
+    }
+
+    .emoji-container {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px 0;
+    }
+
+    .emoji {
+      font-size: 45px;
+      cursor: pointer;
+      padding: 12px;
+      border-radius: 15px;
+      transition: 0.3s ease;
+      background: #FFF7D1;
+    }
+
+    .emoji:hover {
+      transform: scale(1.15);
+      background: #FFE9A3;
+    }
+
+    #quote {
+      margin-top: 25px;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: #4A4A4A;
+    }
+
+    #logout {
+      margin-top: 25px;
+      background: #C8F3D6;
+      padding: 10px 20px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      transition: 0.3s ease;
+    }
+
+    #logout:hover {
+      background: #B3EAC5;
+      transform: scale(1.03);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <h2>Hoe voel je je vandaag?</h2>
+
+    <div class="emoji-container">
+      <div class="emoji" onclick="selectEmotion('blij')">😀</div>
+      <div class="emoji" onclick="selectEmotion('verdrietig')">😢</div>
+      <div class="emoji" onclick="selectEmotion('boos')">😡</div>
+      <div class="emoji" onclick="selectEmotion('moe')">😴</div>
+      <div class="emoji" onclick="selectEmotion('neutraal')">😐</div>
+    </div>
+
+    <div id="quote">Kies een emotie om je SoulColor te zien.</div>
+
+    <button id="logout" onclick="logout()">Uitloggen</button>
+  </div>
+
+  <script>
+    // Emotiekleuren in Soft Pastel Glow
+    const emotionColors = {
+      blij: "#FFE9A3",
+      verdrietig: "#CDE7FF",
+      boos: "#FFB3B3",
+      moe: "#D8C7FF",
+      neutraal: "#F0F0F0"
+    };
+
+    // Quote van de dag
+    function loadQuote() {
+      fetch("quotes.json")
+        .then(res => res.json())
+        .then(data => {
+          const quotes = data.quotes;
+          const today = new Date().getDate();
+          document.getElementById("quote").innerText = quotes[today % quotes.length];
+        });
+    }
+
+    loadQuote();
+
+    // Emotie kiezen
+    function selectEmotion(emotion) {
+      // Achtergrondkleur aanpassen
+      document.body.style.background = emotionColors[emotion];
+
+      // Quote opnieuw tonen
+      loadQuote();
+
+      // Opslaan in historiek
+      let history = JSON.parse(localStorage.getItem("emotionHistory")) || [];
+      history.push({
+        date: new Date().toISOString().split("T")[0],
+        emotion: emotion
+      });
+      localStorage.setItem("emotionHistory", JSON.stringify(history));
+
+      // Later tonen we hier de grafiek
+    }
+
+    function logout() {
+      localStorage.removeItem("loggedInUser");
+      window.location.href = "login.html";
+    }
+  </script>
+
+</body>
+</html>
