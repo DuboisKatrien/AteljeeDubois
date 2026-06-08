@@ -75,11 +75,18 @@
       background: #FFE9A3;
     }
 
+    /* ⭐ Nieuwe opvallende quote */
     #quote {
-      margin-top: 15px;
-      font-size: 1rem;
+      margin-top: 20px;
+      font-size: 1.3rem;
+      font-weight: 600;
       font-style: italic;
-      color: #4A4A4A;
+      color: #ffffff;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.35);
+      padding: 10px 15px;
+      border-radius: 12px;
+      display: inline-block;
     }
 
     #logout {
@@ -130,8 +137,12 @@
         padding: 8px;
       }
 
+      /* ⭐ Quote extra zichtbaar op gsm */
       #quote {
-        font-size: 0.9rem;
+        font-size: 1.2rem;
+        background: rgba(0,0,0,0.45);
+        padding: 10px 15px;
+        border-radius: 12px;
       }
 
       #logout {
@@ -178,8 +189,8 @@
       blij: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/zon.jpg",
       verdrietig: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/regen.jpg",
       boos: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/donder.jpg",
-      moe: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/moe.jpg",
-      neutraal: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/neutraal.jpg"
+      moe: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/orkaan.jpg",
+      neutraal: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/zandstorm.jpg"
     };
 
     /* Emotiewaarden voor grafiek */
@@ -252,40 +263,4 @@
             label: "Jouw SoulColor emoties",
             data: data,
             borderColor: "#ffffff",
-            backgroundColor: "rgba(255,255,255,0.6)",
-            pointBackgroundColor: "#ffffff",
-            pointRadius: 8,
-            borderWidth: 3,
-            tension: 0.4
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              min: 0,
-              max: 6,
-              ticks: {
-                stepSize: 1,
-                callback: function(value) {
-                  return ["", "😢", "😴", "😐", "😡", "😀"][value];
-                }
-              }
-            }
-          },
-          plugins: {
-            legend: { display: false }
-          }
-        }
-      });
-    }
-
-    function logout() {
-      localStorage.removeItem("loggedInUser");
-      window.location.href = "index.html";
-    }
-
-    drawEmotionChart();
-  </script>
-
-</body>
-</html>
+            backgroundColor
