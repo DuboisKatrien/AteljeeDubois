@@ -16,11 +16,17 @@ const emotionColors = {
   neutraal: "#F0F0F0"
 };
 
-// Grafiek tekenen
+// Functie om de grafiek te tekenen
 function drawEmotionChart() {
   const history = JSON.parse(localStorage.getItem("emotionHistory")) || [];
 
-  if (history.length === 0) return;
+  if (history.length === 0) {
+    const ctx = document.getElementById("emotionChart").getContext("2d");
+    ctx.font = "16px Poppins";
+    ctx.fillStyle = "#4A4A4A";
+    ctx.fillText("Nog geen emoties geregistreerd.", 50, 100);
+    return;
+  }
 
   const labels = history.map(entry => entry.date);
   const data = history.map(entry => emotionValues[entry.emotion]);
@@ -54,6 +60,11 @@ function drawEmotionChart() {
               return ["", "😢", "😴", "😐", "😡", "😀"][value];
             }
           }
+        }
+      },
+      plugins: {
+        legend: {
+          display: false
         }
       }
     }
