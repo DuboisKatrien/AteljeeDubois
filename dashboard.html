@@ -115,7 +115,7 @@
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Emotie- en grafieklogica -->
+  <!-- Dashboard script -->
   <script>
     // Pastelkleuren voor achtergrond
     const emotionColors = {
@@ -134,6 +134,10 @@
       moe: 2,
       verdrietig: 1
     };
+
+    // Haal ingelogde gebruiker op
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    const email = user.email;
 
     // Quote van de dag
     function loadQuote() {
@@ -156,19 +160,21 @@
       document.body.style.background = emotionColors[emotion];
       loadQuote();
 
-      let history = JSON.parse(localStorage.getItem("emotionHistory")) || [];
+      let history = JSON.parse(localStorage.getItem("emotionHistory_" + email)) || [];
+
       history.push({
         date: new Date().toISOString().split("T")[0],
         emotion: emotion
       });
-      localStorage.setItem("emotionHistory", JSON.stringify(history));
+
+      localStorage.setItem("emotionHistory_" + email, JSON.stringify(history));
 
       drawEmotionChart();
     }
 
     // Grafiek tekenen
     function drawEmotionChart() {
-      const history = JSON.parse(localStorage.getItem("emotionHistory")) || [];
+      const history = JSON.parse(localStorage.getItem("emotionHistory_" + email)) || [];
       const ctx = document.getElementById("emotionChart").getContext("2d");
 
       if (history.length === 0) {
@@ -219,7 +225,7 @@
 
     function logout() {
       localStorage.removeItem("loggedInUser");
-      window.location.href = "login.html";
+      window.location.href = "index.html";
     }
 
     drawEmotionChart();
