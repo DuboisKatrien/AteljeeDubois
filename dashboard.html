@@ -167,10 +167,50 @@
     // Grafiek tonen bij laden
     drawEmotionChart();
   </script>
+  
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="emotions.js"></script>
+
+<script>
+  // Quote van de dag
+  function loadQuote() {
+    fetch("quotes.json")
+      .then(res => res.json())
+      .then(data => {
+        const quotes = data.quotes;
+        const today = new Date().getDate();
+        document.getElementById("quote").innerText = quotes[today % quotes.length];
+      })
+      .catch(() => {
+        document.getElementById("quote").innerText = "Vandaag is een nieuwe kans om te stralen.";
+      });
+  }
+
+  loadQuote();
+
+  // Emotie kiezen
+  function selectEmotion(emotion) {
+    document.body.style.background = emotionColors[emotion];
+    loadQuote();
+
+    let history = JSON.parse(localStorage.getItem("emotionHistory")) || [];
+    history.push({
+      date: new Date().toISOString().split("T")[0],
+      emotion: emotion
+    });
+    localStorage.setItem("emotionHistory", JSON.stringify(history));
+
+    drawEmotionChart();
+  }
+
+  function logout() {
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "login.html";
+  }
+
+  drawEmotionChart();
+</script>
 
 </body>
 </html>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="emotions.js"></script>
 
