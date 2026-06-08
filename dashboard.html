@@ -1,3 +1,117 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoulColor – Dashboard</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #F7C8E0, #CDE7FF);
+      transition: background 0.6s ease;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.85);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+      width: 450px;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      color: #4A4A4A;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .emoji-container {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px 0;
+    }
+
+    .emoji {
+      font-size: 45px;
+      cursor: pointer;
+      padding: 12px;
+      border-radius: 15px;
+      transition: 0.3s ease;
+      background: #FFF7D1;
+    }
+
+    .emoji:hover {
+      transform: scale(1.15);
+      background: #FFE9A3;
+    }
+
+    #quote {
+      margin-top: 25px;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: #4A4A4A;
+    }
+
+    #logout {
+      margin-top: 25px;
+      background: #C8F3D6;
+      padding: 10px 20px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      transition: 0.3s ease;
+    }
+
+    #logout:hover {
+      background: #B3EAC5;
+      transform: scale(1.03);
+    }
+
+    canvas {
+      margin-top: 30px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <h2>Hoe voel je je vandaag?</h2>
+
+    <div class="emoji-container">
+      <div class="emoji" onclick="selectEmotion('blij')">😀</div>
+      <div class="emoji" onclick="selectEmotion('verdrietig')">😢</div>
+      <div class="emoji" onclick="selectEmotion('boos')">😡</div>
+      <div class="emoji" onclick="selectEmotion('moe')">😴</div>
+      <div class="emoji" onclick="selectEmotion('neutraal')">😐</div>
+    </div>
+
+    <div id="quote">Kies een emotie om je SoulColor te zien.</div>
+
+    <canvas id="emotionChart" width="400" height="200"></canvas>
+
+    <button id="logout" onclick="logout()">Uitloggen</button>
+  </div>
+
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -53,6 +167,7 @@
     // Grafiek tonen bij laden
     drawEmotionChart();
   </script>
+
 </body>
 </html>
 
