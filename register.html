@@ -112,10 +112,10 @@
 
       // ⭐ Nieuwe veilige redirect
       setTimeout(() => {
-        fetch("login.html")
+        fetch("index.html")
           .then(response => {
             if (response.ok) {
-              window.location.href = "login.html";
+              window.location.href = "index.html";
             } else {
               alert("Loginpagina nog niet beschikbaar. Probeer over enkele seconden opnieuw.");
             }
