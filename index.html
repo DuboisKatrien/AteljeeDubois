@@ -14,9 +14,29 @@
       padding: 0;
       height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       background: linear-gradient(135deg, #C8F3D6, #FDE2FF);
+      text-align: center;
+    }
+
+    /* Welkomsttitel */
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #4A4A4A;
+      margin-bottom: 5px;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    /* Subtitel */
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: #4A4A4A;
+      margin-bottom: 30px;
+      opacity: 0.9;
     }
 
     .card {
@@ -68,10 +88,27 @@
       text-decoration: none;
       font-size: 14px;
     }
+
+    /* Mobiel */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.2rem;
+      }
+      h3 {
+        font-size: 1rem;
+      }
+      .card {
+        width: 85%;
+        padding: 25px;
+      }
+    }
   </style>
 </head>
 
 <body>
+
+  <h1>Welkom bij SoulColor</h1>
+  <h3>Ontdek je kleuren. Voel je sterker. Straal elke dag.</h3>
 
   <div class="card">
     <h2>Aanmelden</h2>
@@ -100,10 +137,7 @@
         return;
       }
 
-      // Gebruiker opslaan als ingelogd
       localStorage.setItem("loggedInUser", JSON.stringify(user));
-
-      // Doorsturen naar dashboard
       window.location.href = "dashboard.html";
     });
   </script>
