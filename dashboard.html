@@ -12,25 +12,42 @@
       font-family: "Poppins", sans-serif;
       margin: 0;
       padding: 0;
-      min-height: 100vh;
+      height: 100vh;
       background-size: cover;
       background-position: center;
       background-image: url('https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/emojis.jpg');
       transition: background 0.6s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
     }
 
-    .card {
+    /* Kaart linksboven */
+    .emoji-card {
+      grid-column: 1 / 2;
+      grid-row: 1 / 2;
+      align-self: start;
+      justify-self: start;
       background: rgba(255, 255, 255, 0.85);
-      padding: 25px 30px;
+      padding: 25px 35px;
       border-radius: 20px;
       box-shadow: 0 4px 25px rgba(0,0,0,0.1);
       backdrop-filter: blur(8px);
-      width: 90%;
-      max-width: 420px;
+      margin: 30px;
+    }
+
+    /* Kaart rechtsbeneden */
+    .chart-card {
+      grid-column: 2 / 3;
+      grid-row: 2 / 3;
+      align-self: end;
+      justify-self: end;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 25px 35px;
+      border-radius: 20px;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+      backdrop-filter: blur(8px);
+      margin: 30px;
     }
 
     h2 {
@@ -39,12 +56,10 @@
       font-weight: 600;
     }
 
-    /* ⭐ TERUG NAAR FLEX → ALTIJD WERKT */
     .emoji-container {
       display: flex;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
+      margin: 10px 0;
     }
 
     .emoji {
@@ -52,10 +67,8 @@
       cursor: pointer;
       padding: 10px;
       border-radius: 15px;
-      background: #FFF7D1;
       transition: 0.3s ease;
-      flex: 1 1 calc(20% - 10px);
-      text-align: center;
+      background: #FFF7D1;
     }
 
     .emoji:hover {
@@ -63,6 +76,7 @@
       background: #FFE9A3;
     }
 
+    /* ⭐ Nieuwe opvallende quote */
     #quote {
       margin-top: 20px;
       font-size: 1.3rem;
@@ -94,21 +108,51 @@
     }
 
     canvas {
-      width: 100% !important;
-      height: auto !important;
-      max-height: 240px;
       margin-top: 20px;
     }
 
-    /* 📱 Mobiel */
+    /* 📱 Mobiele versie */
     @media (max-width: 768px) {
-      .emoji {
-        font-size: 32px;
-        flex: 1 1 calc(33% - 10px);
+
+      body {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        padding: 0;
       }
 
+      .emoji-card,
+      .chart-card {
+        margin: 15px;
+        padding: 15px 20px;
+        width: auto;
+        background: rgba(255, 255, 255, 0.65);
+      }
+
+      h2 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+      }
+
+      .emoji {
+        font-size: 32px;
+        padding: 8px;
+      }
+
+      /* ⭐ Quote extra zichtbaar op gsm */
       #quote {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
+        background: rgba(0,0,0,0.45);
+        padding: 10px 15px;
+        border-radius: 12px;
+      }
+
+      #logout {
+        font-size: 13px;
+        padding: 6px 14px;
+      }
+
+      canvas {
+        height: 150px !important;
       }
     }
   </style>
@@ -116,7 +160,8 @@
 
 <body>
 
-  <div class="card">
+  <!-- Emoties linksboven -->
+  <div class="emoji-card">
     <h2>Hoe voel je je vandaag?</h2>
 
     <div class="emoji-container">
@@ -132,14 +177,15 @@
     <button id="logout" onclick="logout()">Uitloggen</button>
   </div>
 
-  <div class="card">
-    <h2>Jouw SoulColor‑lijn</h2>
-    <canvas id="emotionChart"></canvas>
+  <!-- Grafiek rechtsbeneden -->
+  <div class="chart-card">
+    <canvas id="emotionChart" width="400" height="200"></canvas>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <script>
+    /* Foto's voor elke emotie */
     const emotionImages = {
       blij: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/zon.jpg",
       verdrietig: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/regen.jpg",
@@ -148,6 +194,7 @@
       neutraal: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/neutraal.jpg"
     };
 
+    /* Emotiewaarden voor grafiek */
     const emotionValues = {
       blij: 5,
       boos: 4,
@@ -156,11 +203,11 @@
       verdrietig: 1
     };
 
+    /* Ingelogde gebruiker ophalen */
     const user = JSON.parse(localStorage.getItem("loggedInUser"));
     const email = user.email;
 
-    let chartInstance = null;
-
+    /* Quote van de dag */
     function loadQuote() {
       fetch("quotes.json")
         .then(res => res.json())
@@ -176,6 +223,7 @@
 
     loadQuote();
 
+    /* Emotie kiezen */
     function selectEmotion(emotion) {
       document.body.style.background = `url('${emotionImages[emotion]}') center/cover no-repeat`;
 
@@ -193,49 +241,51 @@
       drawEmotionChart();
     }
 
+    /* Grafiek tekenen */
     function drawEmotionChart() {
       const history = JSON.parse(localStorage.getItem("emotionHistory_" + email)) || [];
       const ctx = document.getElementById("emotionChart").getContext("2d");
 
-      if (chartInstance) chartInstance.destroy();
-
       if (history.length === 0) {
         ctx.font = "16px Poppins";
         ctx.fillStyle = "#4A4A4A";
-        ctx.fillText("Nog geen emoties geregistreerd.", 30, 60);
+        ctx.fillText("Nog geen emoties geregistreerd.", 50, 100);
         return;
       }
 
       const labels = history.map(entry => entry.date);
       const data = history.map(entry => emotionValues[entry.emotion]);
 
-      chartInstance = new Chart(ctx, {
+      new Chart(ctx, {
         type: "line",
         data: {
           labels: labels,
           datasets: [{
+            label: "Jouw SoulColor emoties",
             data: data,
             borderColor: "#ffffff",
             backgroundColor: "rgba(255,255,255,0.6)",
             pointBackgroundColor: "#ffffff",
-            pointRadius: 6,
+            pointRadius: 8,
             borderWidth: 3,
             tension: 0.4
           }]
         },
         options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false }},
           scales: {
             y: {
               min: 0,
               max: 6,
               ticks: {
                 stepSize: 1,
-                callback: value => ["", "😢", "😴", "😐", "😡", "😀"][value]
+                callback: function(value) {
+                  return ["", "😢", "😴", "😐", "😡", "😀"][value];
+                }
               }
             }
+          },
+          plugins: {
+            legend: { display: false }
           }
         }
       });
