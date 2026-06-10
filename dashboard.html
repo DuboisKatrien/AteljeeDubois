@@ -8,58 +8,66 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
+    :root {
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-bg-soft: rgba(255, 255, 255, 0.7);
+      --text-main: #4A4A4A;
+      --accent-soft: #FFF7D1;
+      --accent-soft-hover: #FFE9A3;
+      --button-bg: #C8F3D6;
+      --button-bg-hover: #B3EAC5;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: "Poppins", sans-serif;
       margin: 0;
       padding: 0;
-      height: 100vh;
+      min-height: 100vh;
       background-size: cover;
       background-position: center;
       background-image: url('https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/emojis.jpg');
       transition: background 0.6s ease;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
     }
 
-    /* Kaart linksboven */
-    .emoji-card {
-      grid-column: 1 / 2;
-      grid-row: 1 / 2;
-      align-self: start;
-      justify-self: start;
-      background: rgba(255, 255, 255, 0.85);
-      padding: 25px 35px;
-      border-radius: 20px;
-      box-shadow: 0 4px 25px rgba(0,0,0,0.1);
-      backdrop-filter: blur(8px);
-      margin: 30px;
+    .page-wrapper {
+      width: 100%;
+      max-width: 960px;
+      padding: 20px 16px 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
-    /* Kaart rechtsbeneden */
+    .emoji-card,
     .chart-card {
-      grid-column: 2 / 3;
-      grid-row: 2 / 3;
-      align-self: end;
-      justify-self: end;
-      background: rgba(255, 255, 255, 0.85);
-      padding: 25px 35px;
+      background: var(--card-bg);
+      padding: 24px 28px;
       border-radius: 20px;
       box-shadow: 0 4px 25px rgba(0,0,0,0.1);
       backdrop-filter: blur(8px);
-      margin: 30px;
+      width: 100%;
     }
 
     h2 {
-      color: #4A4A4A;
-      margin-bottom: 15px;
+      color: var(--text-main);
+      margin: 0 0 15px;
       font-weight: 600;
+      font-size: 1.4rem;
     }
 
     .emoji-container {
-      display: flex;
-      justify-content: space-between;
-      margin: 10px 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(55px, 1fr));
+      gap: 12px;
+      margin: 10px 0 5px;
     }
 
     .emoji {
@@ -67,70 +75,91 @@
       cursor: pointer;
       padding: 10px;
       border-radius: 15px;
-      transition: 0.3s ease;
-      background: #FFF7D1;
+      transition: 0.25s ease;
+      background: var(--accent-soft);
+      text-align: center;
     }
 
     .emoji:hover {
-      transform: scale(1.15);
-      background: #FFE9A3;
+      transform: scale(1.12);
+      background: var(--accent-soft-hover);
     }
 
-    /* ⭐ Nieuwe opvallende quote */
     #quote {
-      margin-top: 20px;
-      font-size: 1.3rem;
+      margin-top: 16px;
+      font-size: 1.2rem;
       font-weight: 600;
       font-style: italic;
       color: #ffffff;
       text-shadow: 0 2px 6px rgba(0,0,0,0.6);
       background: rgba(0,0,0,0.35);
-      padding: 10px 15px;
+      padding: 10px 14px;
       border-radius: 12px;
       display: inline-block;
     }
 
     #logout {
-      margin-top: 15px;
-      background: #C8F3D6;
+      margin-top: 18px;
+      background: var(--button-bg);
       padding: 8px 18px;
       border-radius: 12px;
       border: none;
       cursor: pointer;
       font-size: 14px;
       font-weight: 600;
-      transition: 0.3s ease;
+      transition: 0.25s ease;
     }
 
     #logout:hover {
-      background: #B3EAC5;
+      background: var(--button-bg-hover);
       transform: scale(1.03);
     }
 
-    canvas {
-      margin-top: 20px;
+    .chart-card {
+      background: var(--card-bg-soft);
     }
 
-    /* 📱 Mobiele versie */
-    @media (max-width: 768px) {
+    canvas {
+      margin-top: 16px;
+      width: 100% !important;
+      height: auto !important;
+      max-height: 260px;
+    }
 
-      body {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto;
-        padding: 0;
+    /* Desktop: kaarten naast elkaar */
+    @media (min-width: 900px) {
+      .page-wrapper {
+        flex-direction: row;
+        align-items: flex-start;
       }
 
       .emoji-card,
       .chart-card {
-        margin: 15px;
-        padding: 15px 20px;
-        width: auto;
-        background: rgba(255, 255, 255, 0.65);
+        width: 50%;
+      }
+
+      .emoji-card {
+        margin-right: 10px;
+      }
+
+      .chart-card {
+        margin-left: 10px;
+      }
+    }
+
+    /* Mobiel / tablet */
+    @media (max-width: 768px) {
+      .page-wrapper {
+        padding: 16px 12px 24px;
+      }
+
+      .emoji-card,
+      .chart-card {
+        padding: 18px 20px;
       }
 
       h2 {
         font-size: 1.2rem;
-        margin-bottom: 10px;
       }
 
       .emoji {
@@ -138,12 +167,9 @@
         padding: 8px;
       }
 
-      /* ⭐ Quote extra zichtbaar op gsm */
       #quote {
-        font-size: 1.2rem;
-        background: rgba(0,0,0,0.45);
-        padding: 10px 15px;
-        border-radius: 12px;
+        font-size: 1.05rem;
+        padding: 8px 12px;
       }
 
       #logout {
@@ -152,153 +178,20 @@
       }
 
       canvas {
-        height: 150px !important;
+        max-height: 220px;
       }
     }
   </style>
 </head>
 
 <body>
+  <div class="page-wrapper">
 
-  <!-- Emoties linksboven -->
-  <div class="emoji-card">
-    <h2>Hoe voel je je vandaag?</h2>
+    <!-- Emoties -->
+    <div class="emoji-card">
+      <h2>Hoe voel je je vandaag?</h2>
 
-    <div class="emoji-container">
-      <div class="emoji" onclick="selectEmotion('blij')">😀</div>
-      <div class="emoji" onclick="selectEmotion('verdrietig')">😢</div>
-      <div class="emoji" onclick="selectEmotion('boos')">😡</div>
-      <div class="emoji" onclick="selectEmotion('moe')">😴</div>
-      <div class="emoji" onclick="selectEmotion('neutraal')">😐</div>
-    </div>
-
-    <div id="quote">Kies een emotie om je SoulColor te zien.</div>
-
-    <button id="logout" onclick="logout()">Uitloggen</button>
-  </div>
-
-  <!-- Grafiek rechtsbeneden -->
-  <div class="chart-card">
-    <canvas id="emotionChart" width="400" height="200"></canvas>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <script>
-    /* Foto's voor elke emotie */
-    const emotionImages = {
-      blij: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/zon.jpg",
-      verdrietig: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/regen.jpg",
-      boos: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/donder.jpg",
-      moe: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/moe.jpg",
-      neutraal: "https://raw.githubusercontent.com/DuboisKatrien/AteljeeDubois/main/Fotos_emoties/neutraal.jpg"
-    };
-
-    /* Emotiewaarden voor grafiek */
-    const emotionValues = {
-      blij: 5,
-      boos: 4,
-      neutraal: 3,
-      moe: 2,
-      verdrietig: 1
-    };
-
-    /* Ingelogde gebruiker ophalen */
-    const user = JSON.parse(localStorage.getItem("loggedInUser"));
-    const email = user.email;
-
-    /* Quote van de dag */
-    function loadQuote() {
-      fetch("quotes.json")
-        .then(res => res.json())
-        .then(data => {
-          const quotes = data.quotes;
-          const today = new Date().getDate();
-          document.getElementById("quote").innerText = quotes[today % quotes.length];
-        })
-        .catch(() => {
-          document.getElementById("quote").innerText = "Vandaag is een nieuwe kans om te stralen.";
-        });
-    }
-
-    loadQuote();
-
-    /* Emotie kiezen */
-    function selectEmotion(emotion) {
-      document.body.style.background = `url('${emotionImages[emotion]}') center/cover no-repeat`;
-
-      loadQuote();
-
-      let history = JSON.parse(localStorage.getItem("emotionHistory_" + email)) || [];
-
-      history.push({
-        date: new Date().toISOString().split("T")[0],
-        emotion: emotion
-      });
-
-      localStorage.setItem("emotionHistory_" + email, JSON.stringify(history));
-
-      drawEmotionChart();
-    }
-
-    /* Grafiek tekenen */
-    function drawEmotionChart() {
-      const history = JSON.parse(localStorage.getItem("emotionHistory_" + email)) || [];
-      const ctx = document.getElementById("emotionChart").getContext("2d");
-
-      if (history.length === 0) {
-        ctx.font = "16px Poppins";
-        ctx.fillStyle = "#4A4A4A";
-        ctx.fillText("Nog geen emoties geregistreerd.", 50, 100);
-        return;
-      }
-
-      const labels = history.map(entry => entry.date);
-      const data = history.map(entry => emotionValues[entry.emotion]);
-
-      new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: labels,
-          datasets: [{
-            label: "Jouw SoulColor emoties",
-            data: data,
-            borderColor: "#ffffff",
-            backgroundColor: "rgba(255,255,255,0.6)",
-            pointBackgroundColor: "#ffffff",
-            pointRadius: 8,
-            borderWidth: 3,
-            tension: 0.4
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              min: 0,
-              max: 6,
-              ticks: {
-                stepSize: 1,
-                callback: function(value) {
-                  return ["", "😢", "😴", "😐", "😡", "😀"][value];
-                }
-              }
-            }
-          },
-          plugins: {
-            legend: { display: false }
-          }
-        }
-      });
-    }
-
-    function logout() {
-      localStorage.removeItem("loggedInUser");
-      window.location.href = "index.html";
-    }
-
-    drawEmotionChart();
-  </script>
-
-</body>
-</html>
-
+      <div class="emoji-container">
+        <div class="emoji" onclick="selectEmotion('blij')">😀</div>
+        <div class="emoji" onclick="selectEmotion('verdrietig')">😢</div>
+        <div class="emoji" onclick="selectEmotion('boos')">
