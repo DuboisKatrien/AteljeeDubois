@@ -10,7 +10,7 @@
   <style>
     body {
       font-family: "Poppins", sans-serif;
-      background: linear-gradient(135deg, #F7C8E0 0%, #CDE7FF 100%);
+      background: linear-gradient(135deg, #F8D7E3 0%, #DCEBFF 100%);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -20,8 +20,8 @@
 
     .container {
       background: rgba(255, 255, 255, 0.85);
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border-radius: 22px;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.12);
       padding: 30px;
       width: 90%;
       max-width: 500px;
@@ -42,18 +42,19 @@
     }
 
     button {
-      background: #B39DDB;
-      color: white;
+      background: #E6D9FF;
+      color: #4A4A4A;
       border: none;
       padding: 10px 16px;
       border-radius: 12px;
       cursor: pointer;
       font-size: 1rem;
       transition: 0.3s ease;
+      font-weight: 500;
     }
 
     button:hover {
-      background: #A084CA;
+      background: #D4C4FF;
       transform: scale(1.05);
     }
 
@@ -78,79 +79,11 @@
     }
 
     .save-btn {
-      background: #C8F3D6;
+      background: #DFF8E1;
       color: #333;
       font-weight: 600;
       margin-top: 15px;
     }
 
     .save-btn:hover {
-      background: #B3EAC5;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 20px;
-      }
-      button {
-        font-size: 0.9rem;
-        padding: 8px 12px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="container">
-    <h2>Mijn Dagboek 📘</h2>
-
-    <div class="nav-buttons">
-      <button onclick="window.location.href='dashboard.html'">⬅ Dashboard</button>
-      <button onclick="window.location.href='overzicht.html'">📅 Overzicht</button>
-    </div>
-
-    <label for="dateInput">Datum</label>
-    <input type="date" id="dateInput">
-
-    <label for="textInput">Wat wil je kwijt?</label>
-    <textarea id="textInput" rows="6" placeholder="Typ hier je gedachten..."></textarea>
-
-    <button class="save-btn" onclick="saveEntry()">Opslaan</button>
-  </div>
-
-  <script>
-    const dateInput = document.getElementById("dateInput");
-    const textInput = document.getElementById("textInput");
-
-    // Automatisch datum invullen als je via overzicht komt
-    const urlParams = new URLSearchParams(window.location.search);
-    const passedDate = urlParams.get("date");
-    if (passedDate) {
-      dateInput.value = passedDate;
-      textInput.value = localStorage.getItem("dagboek_" + passedDate) || "";
-    }
-
-    // Lokaal opslaan
-    function saveEntry() {
-      const date = dateInput.value;
-      const text = textInput.value;
-
-      if (!date) {
-        alert("Kies eerst een datum.");
-        return;
-      }
-
-      localStorage.setItem("dagboek_" + date, text);
-      alert("Opgeslagen!");
-    }
-
-    // Laden bij datumkeuze
-    dateInput.addEventListener("change", () => {
-      const key = "dagboek_" + dateInput.value;
-      textInput.value = localStorage.getItem(key) || "";
-    });
-  </script>
-
-</body>
-</html>
+      background
