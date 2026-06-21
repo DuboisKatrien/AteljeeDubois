@@ -88,16 +88,6 @@
       color: #333;
       border: 2px solid #B8EFC0;
     }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 20px;
-      }
-      button {
-        font-size: 0.9rem;
-        padding: 8px 12px;
-      }
-    }
   </style>
 </head>
 
@@ -116,6 +106,9 @@
   </div>
 
   <script>
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    const email = user.email;
+
     const calendar = document.getElementById("calendar");
     const monthTitle = document.getElementById("monthTitle");
 
@@ -142,7 +135,7 @@
 
       for (let day = 1; day <= daysInMonth; day++) {
         const dateStr = `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
-        const entry = localStorage.getItem("dagboek_" + dateStr);
+        const entry = localStorage.getItem("dagboek_" + email + "_" + dateStr);
 
         const div = document.createElement("div");
         div.classList.add("day");
