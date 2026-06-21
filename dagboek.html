@@ -111,12 +111,14 @@
   </div>
 
   <script>
+    // Ingelogde gebruiker ophalen
     const user = JSON.parse(localStorage.getItem("loggedInUser"));
     const email = user.email;
 
     const dateInput = document.getElementById("dateInput");
     const textInput = document.getElementById("textInput");
 
+    // Datum vanuit overzicht automatisch invullen
     const urlParams = new URLSearchParams(window.location.search);
     const passedDate = urlParams.get("date");
 
@@ -125,6 +127,7 @@
       textInput.value = localStorage.getItem("dagboek_" + email + "_" + passedDate) || "";
     }
 
+    // Opslaan per gebruiker
     function saveEntry() {
       const date = dateInput.value;
       const text = textInput.value;
@@ -138,10 +141,38 @@
       alert("Opgeslagen!");
     }
 
+    // Laden bij datumkeuze
     dateInput.addEventListener("change", () => {
       const key = "dagboek_" + email + "_" + dateInput.value;
       textInput.value = localStorage.getItem(key) || "";
     });
+
+    // --- MIGRATIE: oude dagboek entries omzetten naar privé per gebruiker ---
+    function migrateOldEntries() {
+      const keysToConvert = [];
+
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+
+        // Oude structuur: dagboek_YYYY-MM-DD
+        if (key.startsWith("dagboek_") && key.split("_").length === 2) {
+          keysToConvert.push(key);
+        }
+      }
+
+      keysToConvert.forEach(oldKey => {
+        const date = oldKey.split("_")[1];
+        const value = localStorage.getItem(oldKey);
+
+        const newKey = "dagboek_" + email + "_" + date;
+
+        if (!localStorage.getItem(newKey)) {
+          localStorage.setItem(newKey, value);
+        }
+      });
+    }
+
+    migrateOldEntries();
   </script>
 
 </body>
