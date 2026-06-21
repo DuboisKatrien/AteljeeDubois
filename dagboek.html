@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dagboek</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f5f5ff;
+      padding: 20px;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+    button {
+      background: #4b6bff;
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    button:active {
+      background: #3b57d0;
+    }
+    input, textarea {
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Mijn Dagboek 📘</h2>
+
+    <div style="display:flex; gap:10px; margin-bottom:15px;">
+      <button onclick="window.location.href='dashboard.html'">⬅ Dashboard</button>
+      <button onclick="window.location.href='overzicht.html'">📅 Overzicht</button>
+    </div>
+
+    <label>Datum</label>
+    <input type="date" id="dateInput">
+
+    <label>Wat wil je kwijt?</label>
+    <textarea id="textInput" rows="6" placeholder="Typ hier je gedachten..."></textarea>
+
+    <button onclick="saveEntry()">Opslaan</button>
+  </div>
+
+  <script>
+    const dateInput = document.getElementById("dateInput");
+    const textInput = document.getElementById("textInput");
+
+    // Automatisch datum invullen als je via overzicht komt
+    const urlParams = new URLSearchParams(window.location.search);
+    const passedDate = urlParams.get("date");
+    if (passedDate) {
+      dateInput.value = passedDate;
+      textInput.value = localStorage.getItem("dagboek_" + passedDate) || "";
+    }
+
+    // Lokaal opslaan (nu)
+    function saveLocal(date, text) {
+      localStorage.setItem("dagboek_" + date, text);
+    }
+
+    // Later: online opslaan
+    async function saveOnline(date, text) {
+      console.log("Online opslag komt later");
+    }
+
+    // Laden bij datumkeuze
+    dateInput.addEventListener("change", () => {
+      const date = dateInput.value;
+      textInput.value = localStorage.getItem("dagboek_" + date) || "";
+    });
+
+    async function saveEntry() {
+      const date = dateInput.value;
+      const text = textInput.value;
+
+      if (!date) {
+        alert("Kies eerst een datum.");
+        return;
+      }
+
+      saveLocal(date, text);
+      await saveOnline(date, text);
+
+      alert("Opgeslagen!");
+    }
+  </script>
+
+</body>
+</html>
