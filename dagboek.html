@@ -86,4 +86,63 @@
     }
 
     .save-btn:hover {
-      background
+      background: #C8F3D6;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h2>Mijn Dagboek 📘</h2>
+
+    <div class="nav-buttons">
+      <button onclick="window.location.href='dashboard.html'">⬅ Dashboard</button>
+      <button onclick="window.location.href='overzicht.html'">📅 Overzicht</button>
+    </div>
+
+    <label for="dateInput">Datum</label>
+    <input type="date" id="dateInput">
+
+    <label for="textInput">Wat wil je kwijt?</label>
+    <textarea id="textInput" rows="6" placeholder="Typ hier je gedachten..."></textarea>
+
+    <button class="save-btn" onclick="saveEntry()">Opslaan</button>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    const email = user.email;
+
+    const dateInput = document.getElementById("dateInput");
+    const textInput = document.getElementById("textInput");
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const passedDate = urlParams.get("date");
+
+    if (passedDate) {
+      dateInput.value = passedDate;
+      textInput.value = localStorage.getItem("dagboek_" + email + "_" + passedDate) || "";
+    }
+
+    function saveEntry() {
+      const date = dateInput.value;
+      const text = textInput.value;
+
+      if (!date) {
+        alert("Kies eerst een datum.");
+        return;
+      }
+
+      localStorage.setItem("dagboek_" + email + "_" + date, text);
+      alert("Opgeslagen!");
+    }
+
+    dateInput.addEventListener("change", () => {
+      const key = "dagboek_" + email + "_" + dateInput.value;
+      textInput.value = localStorage.getItem(key) || "";
+    });
+  </script>
+
+</body>
+</html>
